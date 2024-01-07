@@ -1,0 +1,50 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+    <div id="sidebar">
+        <h3>Категория</h3>
+        <ul>
+            <li><a class="active" href="#home">Home</a></li>
+            <li {% if not category %}class="selected"{% endif %}>
+                <a href="{% url 'shop:product_list' %}">All</a>
+            </li>
+            {% for c in categories %}
+                <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                </li>
+
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="main" class="product-list">
+        <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+
+        {% for product in products %}
+            <div class="product-item">
+                <div class="product-img">
+                      <a href="{{ product.get_absolute_url }}">
+                          <img height="300" width="300" src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+                      </a>
+                </a>
+                </div>
+                    <div class="product-list">
+                        <h3>{{ product.name }}</h3>
+                        <div class="stars"></div>
+                        <span class="price">{{product.price}}</span>
+                            <div class="actions">
+                                <div class="add-to-cart">
+                                    <a href="" class="cart-button">В корзину</a>
+                                </div>
+                  <div class="add-to-links">
+                    <a href="" class="wishlist"></a>
+                    <a href="" class="compare"></a>
+                  </div>
+                  </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
